@@ -1,13 +1,13 @@
 # I think there should be a recipe class: dict of ingredient -> measurement, list of verbs, function to compute distance
 import os
 import re
+import json
 from fractions import Fraction
 from recipe import Recipe
 
 recipes = os.listdir("ccc")
 
 arecipe = recipes[0]
-
 
 by_recipe = {}
 
@@ -47,8 +47,20 @@ for recipe in recipes:
         if line.startswith("Ingredients"):
             ingredient_block = True
 
-print by_recipe[arecipe].ingredients
-for recipe in by_recipe.keys():
-    print recipe
-    print by_recipe[arecipe].distance(by_recipe[recipe])
+# following http://bl.ocks.org/mbostock/4062045
+nodes = [{"name": i} for i in recipes]
 
+recipes = recipes[1:]
+
+target = 0
+source = 1
+links = []
+for recipe in recipes:
+    #print recipe
+    #value = int(by_recipe[arecipe].distance(by_recipe[recipe])*100)
+    value = by_recipe[arecipe].distance(by_recipe[recipe])
+    #print value
+    links.append({"source": source, "target": target, "value": value})
+    source = source + 1
+
+print json.dumps({"nodes":nodes, "links":links})
