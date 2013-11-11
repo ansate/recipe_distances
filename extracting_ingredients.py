@@ -2,6 +2,7 @@
 import os
 import re
 import json
+import itertools
 from fractions import Fraction
 from recipe import Recipe
 
@@ -50,17 +51,14 @@ for recipe in recipes:
 # following http://bl.ocks.org/mbostock/4062045
 nodes = [{"name": i} for i in recipes]
 
-recipes = recipes[1:]
+indices = range(0, len(recipes))
 
-target = 0
-source = 1
 links = []
-for recipe in recipes:
-    #print recipe
-    #value = int(by_recipe[arecipe].distance(by_recipe[recipe])*100)
-    value = by_recipe[arecipe].distance(by_recipe[recipe])
-    #print value
-    links.append({"source": source, "target": target, "value": value})
-    source = source + 1
+for pair in itertools.combinations(indices, 2):
+    recipex = recipes[pair[0]]
+    recipey = recipes[pair[1]]
+    value = by_recipe[recipex].distance(by_recipe[recipey])
+    links.append({"source": pair[0], "target": pair[1], "value": value})
+
 
 print json.dumps({"nodes":nodes, "links":links})
