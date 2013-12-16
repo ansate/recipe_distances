@@ -6,7 +6,11 @@ import itertools
 from fractions import Fraction
 from recipe import Recipe
 
-recipes = os.listdir("ccc")
+recipes = []
+rdirs = ["chili","ccc"]
+for rdir in rdirs:
+    for filename in os.listdir(rdir):
+        recipes.append(os.path.join(rdir,filename))
 
 arecipe = recipes[0]
 
@@ -30,12 +34,15 @@ def clean_measure(raw):
     if len(bits) > 1 and "/" in bits[1]:
         return float(bits[0]) + float(Fraction(bits[1]))
     else:
-        return float(bits[0])
+        try: 
+            return float(bits[0])
+        except:
+            return 1
          
 
 for recipe in recipes:
     by_recipe[recipe] = Recipe()
-    f = open("ccc/" +recipe, "r")
+    f = open( recipe, "r")
     ingredient_block = False
 
     for line in f:
@@ -49,7 +56,11 @@ for recipe in recipes:
             ingredient_block = True
 
 # following http://bl.ocks.org/mbostock/4062045
-nodes = [{"name": i} for i in recipes]
+#nodes = [{"name": i} for i in recipes]
+nodes = []
+for recipe in recipes:
+    bits = recipe.split("/")
+    nodes.append({"group": bits[0], "name": bits[1]}) 
 
 indices = range(0, len(recipes))
 
