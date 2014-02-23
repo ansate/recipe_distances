@@ -30,12 +30,10 @@ var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-d3.json("recipe_distances.json", function(error, graph) {
-//d3.json("test.json", function(error, graph) {
+d3.json("pancake_distances.json", function(error, graph) {
   force
       .nodes(graph.nodes)
       .links(graph.links)
-      //.linkDistance(function(d) { return d.distance = 100; })
       .linkDistance(function(d) { return d.distance = d.value*10; })
       .start();
 
@@ -43,7 +41,6 @@ d3.json("recipe_distances.json", function(error, graph) {
       .data(graph.links)
     .enter().append("line")
       .attr("class", "link")
-      //.style("stroke-width", function(d) { return Math.sqrt(d.value); });
       .style("stroke-width", function(d) { return 5; });
 
   var node = svg.selectAll(".node")

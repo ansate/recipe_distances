@@ -7,7 +7,7 @@ from fractions import Fraction
 from recipe import Recipe
 
 recipes = []
-rdirs = ["chili","ccc"]
+rdirs = ["pancakes"]
 for rdir in rdirs:
     for filename in os.listdir(rdir):
         recipes.append(os.path.join(rdir,filename))
@@ -41,6 +41,7 @@ def clean_measure(raw):
          
 
 for recipe in recipes:
+    #print recipe
     by_recipe[recipe] = Recipe()
     f = open( recipe, "r")
     ingredient_block = False
